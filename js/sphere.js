@@ -46,7 +46,7 @@ shaderLoader.shaderSetLoaded = function() {
     draw();
   }
 
-shaderLoader.load( 'sphere.vert' );
+shaderLoader.load( 'default.vert' );
 shaderLoader.load( 'sphere.frag' );
 //shaderLoader.load( 'TWGL_test1.vert' );
 //shaderLoader.load( 'TWGL_test1.frag' );
