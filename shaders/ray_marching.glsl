@@ -65,8 +65,8 @@ void main() {
     vec2 v2f_position = (2.0*gl_FragCoord.xy - resolution) / resolution.y;
 
     float f = 3.0;
-    vec3 eye = mat3(m_view) * vec3(-10, 0, 0);            // eye location
-    vec3 r_o = mat3(m_view) * (vec3(-10, 0, 0) + vec3(f, v2f_position));     // ray origin
+    vec3 eye = mat3(m_view) * vec3(-5, 0, 0);            // eye location
+    vec3 r_o = mat3(m_view) * (vec3(-5, 0, 0) + vec3(f, v2f_position));     // ray origin
     vec3 r_dir = normalize(r_o - eye);                    // ray direction
 
 
@@ -82,7 +82,7 @@ void main() {
     // ray marching parameters (these work well for the moment)
     float eps = 2.0 / resolution.y; // ray marching tolerance
     int max_iter = 100;             // maximal ray marching iterations
-    float dist_tot_max = 10.0;      // maximal distance before color is set to background color
+    float dist_tot_max = 5.0;      // maximal distance before color is set to background color
 
     vec3 color = vec3(0, 0, 0);     // color of object at intersection
 

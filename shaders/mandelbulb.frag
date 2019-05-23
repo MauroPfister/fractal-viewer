@@ -3,19 +3,20 @@
 precision mediump float;
 
 uniform mat4 m_view;
-//uniform float n;
+uniform float n;
 uniform vec2 resolution;
 
 out vec4 f_color;   // Final color output produced by fragment shader.
 
 // distance estimator for mandelbulb fractal
+/*
 float dist_estimator(vec3 pos) {
     float bailout = 16.0;
     int iter = 4;
 	float n = 8.0;
 	vec3 w = pos;
 	float dr = 1.0;     // escape time length
-	float r = 0.0;        // length of the running derivative
+	float r = 0;        // length of the running derivative
 
 	for (int i = 0; i < iter; i++) {
 		
@@ -35,6 +36,33 @@ float dist_estimator(vec3 pos) {
 		if (r > bailout) break;
 	}
 	return 0.5 * log(r) * r/dr;
+}*/
+
+
+float dist_estimator(vec3 pos) {
+	float Bailout = 16.0;
+	vec3 z = pos;
+	float dr = 1.0;
+	float r = 0.0;
+	for (int i = 0; i < 4 ; i++) {
+		r = length(z);
+		if (r>Bailout) break;
+		
+		// convert to polar coordinates
+		float theta = acos(z.z/r);
+		float phi = atan(z.y,z.x);
+		dr =  pow( r, n-1.0)*n*dr + 1.0;
+		
+		// scale and rotate the point
+		float zr = pow( r,n);
+		theta = theta*n;
+		phi = phi*n;
+		
+		// convert back to cartesian coordinates
+		z = zr*vec3(sin(theta)*cos(phi), sin(phi)*sin(theta), cos(theta));
+		z+=pos;
+	}
+	return 0.5*log(r)*r/dr;
 }
 
 $ray_marching$
