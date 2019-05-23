@@ -3,7 +3,7 @@
 precision mediump float;
 
 uniform mat4 m_view;
-uniform float n;
+//uniform float n;
 uniform vec2 resolution;
 
 out vec4 f_color;   // Final color output produced by fragment shader.

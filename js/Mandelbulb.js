@@ -118,7 +118,7 @@
           //y_axis = twgl.m4.transformDirection(twgl.m4.inverse(m_view), y_axis);
           
           uniforms.m_view = m_view;
-          uniforms.n = 8.0;
+          //uniforms.n = 8.0;
           uniforms.resolution = [gl.canvas.width, gl.canvas.height];
 
           gl.useProgram(programInfo.program);
