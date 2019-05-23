@@ -27,8 +27,8 @@ const gl = document.querySelector("#c").getContext("webgl2");
   }
 
 
-var pathToShaders = 'shaders/';
-var pathToChunks  = 'shaders/';
+var pathToShaders = '../shaders/';
+var pathToChunks  = '../shaders/';
 var shaderLoader = new ShaderLoader( pathToShaders , pathToChunks );
 
 

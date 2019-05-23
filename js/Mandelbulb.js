@@ -26,8 +26,8 @@
 
 
         // load shaders
-        var pathToShaders = 'shaders/';
-        var pathToChunks  = 'shaders/';
+        var pathToShaders = '../shaders/';
+        var pathToChunks  = '../shaders/';
         var shaderLoader = new ShaderLoader( pathToShaders , pathToChunks );
 
         var programInfo;
@@ -40,7 +40,7 @@
         }
           
         shaderLoader.load( 'dist_field_ray_marching.vert' );
-        shaderLoader.load( 'mandelbulb.frag' );
+        shaderLoader.load( 'roundbox.frag' );
           
         var z_ang = 0.0;
         var y_ang = 0.0;
