@@ -40,7 +40,7 @@
         }
           
         shaderLoader.load( 'dist_field_ray_marching.vert' );
-        shaderLoader.load( 'mandelbox.frag' );
+        shaderLoader.load( 'mandelbulb.frag' );
           
         var z_ang = 0.0;
         var y_ang = 0.0;

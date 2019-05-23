@@ -12,6 +12,7 @@ out vec4 f_color;   // Final color output produced by fragment shader.
 float dist_estimator(vec3 pos) {
     float bailout = 16.0;
     int iter = 4;
+	float n = 8.0;
 	vec3 w = pos;
 	float dr = 1.0;     // escape time length
 	float r = 0.0;        // length of the running derivative
