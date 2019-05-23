@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<script
+    src="https://code.jquery.com/jquery-3.3.1.js"
+    integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+    crossorigin="anonymous">
+</script>
+
+
+
+<head>
+  <title>ICG: fractral viewer</title>
+  
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 20px;
+      border: 0;
+      overflow: hidden; /*  Disable scrollbars */
+      display: block;  /* No floating content on sides */
+    }
+    </style>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <meta property="og:title" content="TWGL.js - tiny" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="http://twgljs.org/examples/screenshots/tiny.png" />
+  <meta property="og:description" content="TWGL.js - tiny" />
+  <meta property="og:url" content="http://twgljs.org" />
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@greggman">
+  <meta name="twitter:creator" content="@greggman">
+  <meta name="twitter:domain" content="twgljs.org">
+  <meta name="twitter:title" content="TWGL.js - tiny">
+  <meta name="twitter:url" content="http://twgljs.org/examples/tiny.html">
+  <meta name="twitter:description" content="TWGL.js - tiny">
+  
+  <script src = "function.js"></script>
+</head>
+
+
+
+
+<body style="background-color: #333333;">
+
+
+
+<!-- Variable: -->
+
+
+<div class="row">
+   
+  <!-- Left side:-->  
+  <!-- <div class="col-sm-1"></div> -->
+  
+  <div class="col-sm-2">
+
+    <br /> 
+    <br /> 
+
+
+    <div class="col-md-12 school-options-dropdown text-center">
+    <div class="dropdown">
+      <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Fractal choice
+      <span class="caret"></span></button>
+      <ul class="dropdown-menu">
+        <li><a role="menuitem" href="sphere.html">Sphere</a></li>
+        <li><a role="menuitem" href="Mandelbulb.html"">Mandelbulb</a></li>
+      </ul>
+    </div> 
+    </div>
+
+
+  </div>
+    
+    
+  <!-- <div class="col-sm-1"></div> -->
+   <!-- Right side--> 
+  <div class="col-sm-9" id="right_hand_side">
+
+
+    <canvas id="c"></canvas>
+    <script>
+      //fitToContainer(c);
+      c.style.width ='100%';
+      c.width  = c.offsetWidth;
+       //c.style.height = '95%';
+      c.height = window.innerHeight;
+    </script>
+
+  </div>
+  
+  <div class="col-sm-1"></div>
+</div> 
+</body>
+
+
+<script src="lib/twgl-full.js"></script>
+<script src="lib/jquery-3.4.1.js"></script>
+<script src="js/ShaderLoader.js"></script>
+
+
+
+
+
+
+<script src="Mandelbulb.js"></script>
+
+
+
+
+</html>
