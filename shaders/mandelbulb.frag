@@ -9,14 +9,14 @@ uniform vec2 resolution;
 out vec4 f_color;   // Final color output produced by fragment shader.
 
 // distance estimator for mandelbulb fractal
-/*
+
 float dist_estimator(vec3 pos) {
     float bailout = 16.0;
     int iter = 4;
 	float n = 8.0;
 	vec3 w = pos;
 	float dr = 1.0;     // escape time length
-	float r = 0;        // length of the running derivative
+	float r = length(w);        // length of the running derivative
 
 	for (int i = 0; i < iter; i++) {
 		
@@ -36,9 +36,9 @@ float dist_estimator(vec3 pos) {
 		if (r > bailout) break;
 	}
 	return 0.5 * log(r) * r/dr;
-}*/
+}
 
-
+/*
 float dist_estimator(vec3 pos) {
 	float Bailout = 16.0;
 	vec3 z = pos;
@@ -46,7 +46,7 @@ float dist_estimator(vec3 pos) {
 	float r = 0.0;
 	for (int i = 0; i < 4 ; i++) {
 		r = length(z);
-		if (r>Bailout) break;
+		if (r > Bailout) break;
 		
 		// convert to polar coordinates
 		float theta = acos(z.z/r);
@@ -62,8 +62,9 @@ float dist_estimator(vec3 pos) {
 		z = zr*vec3(sin(theta)*cos(phi), sin(phi)*sin(theta), cos(theta));
 		z+=pos;
 	}
+	r = length(z);
 	return 0.5*log(r)*r/dr;
-}
+}*/
 
 $ray_marching$
 
