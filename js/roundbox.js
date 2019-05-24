@@ -40,7 +40,7 @@
         }
           
         shaderLoader.load( 'default.vert' );
-        shaderLoader.load( 'mandelbulb.frag' );
+        shaderLoader.load( 'roundbox.frag' );
           
         var z_ang = 0.0;
         var y_ang = 0.0;
