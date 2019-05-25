@@ -3,6 +3,7 @@
 precision mediump float;
 
 uniform mat4 m_view;
+uniform mat4 rot_obj;
 uniform float Power;
 uniform vec2 resolution;
 
@@ -11,6 +12,7 @@ out vec4 f_color;   // Final color output produced by fragment shader.
 
 float dist_estimator( vec3 p )
 {
+    p = mat3(rot_obj) * p;
     vec3 b = vec3(0.8, 0.3, 0.2);
     float r = 0.2;
 
