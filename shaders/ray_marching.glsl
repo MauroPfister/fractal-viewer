@@ -31,13 +31,13 @@ float intersect( inout vec3 p, vec3 r_dir, int max_iter, float dist_tot_max, flo
 }
 
 // determine if point p is shadowed
-float shadow( vec3 p, vec3 n, vec3 light_pos, int max_iter, float dist_tot_max, float eps ) 
+int shadow( vec3 p, vec3 n, vec3 light_pos, int max_iter, float dist_tot_max, float eps ) 
 {
     p += 3.0 * eps * n;   // move the ray origin a bit away from surface
     vec3 r_dir = normalize(light_pos - p);
     float dist_tot = eps;
     float dist;
-    float p_light = length(light_pos - p);
+    float dist_light = length(light_pos - p);
 
     for (int i = 0; i < max_iter; i++) {
         dist = dist_estimator(p);
@@ -46,15 +46,15 @@ float shadow( vec3 p, vec3 n, vec3 light_pos, int max_iter, float dist_tot_max, 
 
         // stop if distance to object is smaller than tolerance or if we are past the object
         if ( (dist < eps )) {
-            return 0.0;
+            return 1;
         }
 
-        if (dist_tot > p_light){
-            return 1.0;
+        if (dist_tot > dist_light){
+            return 0;
         }
     }
 
-    return 1.0;
+    return 0;
 }
 
 // calculate ambient occlusion at point p
@@ -107,10 +107,10 @@ void main() {
         vec3 n = calc_normal(p, eps);
 
         // determine if point is shadowed
-        float shadow = shadow( p, n, light_pos[light], max_iter, dist_tot_max, eps );
+        int shadow = shadow( p, n, light_pos[light], max_iter, dist_tot_max, eps );
         
         // phong lighting model
-        if (( dist_tot < dist_tot_max ) && (shadow > 0.5)) {        
+        if (( dist_tot < dist_tot_max ) && (shadow == 0)) {        
             // ambient component
             color += vec3(0.05 * m_dif * light_col[light]);
 
@@ -130,8 +130,6 @@ void main() {
                 color += m_spec * light_col[light] * pow(dot_vr, shininess);
             } 
         }
-
-
     }
     
     f_color = vec4(color , 1.0);
