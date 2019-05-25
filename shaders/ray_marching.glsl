@@ -78,12 +78,15 @@ void main() {
 
 
     // light properties
-    int number_of_light = 2;
-    vec3 light_pos[2] = vec3[]( vec3(-3., 3.0, 0.0), vec3(-3., -3.0, 0.0));
-    vec3 light_col[2] = vec3[]( vec3(1., 1., 1.), vec3(1., 1.0, 1.));
+    int number_of_lights = 2;
+    vec3 light_pos[2] = vec3[]( vec3(-3.0, 3.0, 1.0), vec3(-4.0, -3.0, -1.0));
+    vec3 light_col[2] = vec3[]( vec3(0.6, 0.6, 0.9), vec3(0.9, 0.6, 0.6));
     
     //vec3 light_pos = vec3(-3., 3.0, 0.0);
     //vec3 light_col = vec3(1.0 , 1.0, 1.0);
+
+    // sky colour
+    vec3 sky_col = vec3(0.8, 0.9, 1.0);
 
     // material of object
     vec3 m_dif = vec3(0.7);
@@ -97,40 +100,55 @@ void main() {
 
     vec3 color = vec3(0, 0, 0);     // color of object at intersection
 
-    for(int light=0; light<number_of_light; light++){
+    // ray marching
+    vec3 p = r_o;
+    float dist_tot = intersect(p, r_dir, max_iter, dist_tot_max, eps);
 
-        // ray marching
-        vec3 p = r_o;
-        float dist_tot = intersect(p, r_dir, max_iter, dist_tot_max, eps);
+    // normal at intersection point
+    vec3 n = calc_normal(p, eps);
 
-        // normal at intersection point
-        vec3 n = calc_normal(p, eps);
+    // make shadows less dark
+    color = 0.1 * sky_col;
 
-        // determine if point is shadowed
-        int shadow = shadow( p, n, light_pos[light], max_iter, dist_tot_max, eps );
-        
-        // phong lighting model
-        if (( dist_tot < dist_tot_max ) && (shadow == 0)) {        
-            // ambient component
-            color += vec3(0.05 * m_dif * light_col[light]);
+    if ( dist_tot < dist_tot_max ) {
+        // ray hits fractal
 
-            vec3 l = light_pos[light] - p;
-            vec3 r = reflect(-l, n);
-            vec3 v = eye - p;
-            float dot_nl = dot(n, normalize(l));
-            float dot_vr = dot(normalize(v), normalize(r));
+        // calculate contribution of each light
+        for(int light = 0; light < number_of_lights; light++){
 
-            // diffuse component
-            if (dot_nl > 0.0) {
-                color += m_dif * light_col[light] * dot_nl;
+            // determine if point is shadowed
+            int shadow = shadow( p, n, light_pos[light], max_iter, dist_tot_max, eps );
+            
+            // phong lighting model
+            if ( shadow == 0 ) {        
+                // ambient component
+                color += vec3(0.05 * m_dif * light_col[light]);
+
+                vec3 l = light_pos[light] - p;
+                vec3 r = reflect(-l, n);
+                vec3 v = eye - p;
+                float dot_nl = dot(n, normalize(l));
+                float dot_vr = dot(normalize(v), normalize(r));
+
+                // diffuse component
+                if (dot_nl > 0.0) {
+                    color += m_dif * light_col[light] * dot_nl;
+                }
+
+                // specular component
+                if ((dot_nl > 0.0) && (dot_vr > 0.0)) {
+                    color += m_spec * light_col[light] * pow(dot_vr, shininess);
+                } 
             }
-
-            // specular component
-            if ((dot_nl > 0.0) && (dot_vr > 0.0)) {
-                color += m_spec * light_col[light] * pow(dot_vr, shininess);
-            } 
         }
+    } else {
+        // ray hits sky
+        color = sky_col * (0.7 + 0.3 * (0.5 * dot( normalize(r_dir), normalize(light_pos[0]) ) 
+                                      + 0.5 * dot( normalize(r_dir), normalize(light_pos[1]) ) ) );
     }
     
+    // gamma correction
+    color = 1.1 * pow(color, vec3(1.3));
+
     f_color = vec4(color , 1.0);
 }
