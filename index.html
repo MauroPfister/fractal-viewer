@@ -23,7 +23,6 @@
 </head>
 
 
-
 <body>
 
 <style>
@@ -37,15 +36,10 @@
     height : 90%;
   }
 
-  .dropdown {
-    margin-top : 5%;
-    position : absolute;
-    left : 50%;
-    transform : translate(-50%, 0%);
-  }
+
   
   .col-sm-4 {
-    height: inherit;
+    height : inherit;
     background-color : rgb(236, 236, 236);
   }
 
@@ -57,28 +51,52 @@
     height : 100%;
     width : 100%;
   }
+
+  .mini-box {
+    height: 60px;
+    line-height: 30px;
+  }
+  
+  .mini-box-small{
+    height: 20px;
+    line-height: 30px;
+  }
 </style>
 
 
 <div class="container">
   <div class="row">
     <div class="col-sm-4 rounded">
-        <div class="dropdown">
-          <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
-            Fractal choice
-          </button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="html/roundbox.html">Round Box</a>
-              <a class="dropdown-item" href="html/mandelbulb.html">Mandelbulb</a>
-          </div>
-        </div> 
+        <div class="col mini-box-small"></div>
+        <div class="col mini-box">
+          <div class="dropdown">
+            <button class="btn btn-outline-dark dropdown-toggle" type="button" id="fractalSelection" data-toggle="dropdown"> 
+              Fractal
+            </button>
+            <div class="dropdown-menu test">
+                <a class="dropdown-item" href="#">Rounded box</a>
+                <a class="dropdown-item" href="#">Mandelbulb</a>
+                <a class="dropdown-item" href="#">Mandelbox</a>
+                <a class="dropdown-item" href="#">Juliaset</a>
+                <a class="dropdown-item" href="#">Sierpinski pyramid</a>
+              </div>         
+          </div> 
+        </div>
+        <div class="col mini-box">
+          <div class="slidecontainer">
+              <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+          </div>        
+        </div>
+        <div class="col mini-box">
+            <button class="btn btn-outline-dark" type="button">test</button>
+        </div>
     </div>
-    
     <div class="col-sm-8">
       <canvas id="c" class="rounded"></canvas>
     </div>
   </div>
-</div> 
+</div>
+
 
 </body>
 
@@ -89,6 +107,6 @@
 <script src="lib/twgl-full.js"></script>
 <script src="lib/jquery-3.4.1.js"></script>
 <script src="js/shaderloader.js"></script>
-
+<script src="js/fractalViewer.js"></script>
 
 </html>
