@@ -20,8 +20,8 @@ function getRelativeMousePosition(event, target) {
 }
 
 // load shaders
-var pathToShaders = '../shaders/';
-var pathToChunks  = '../shaders/';
+var pathToShaders = 'shaders/';
+var pathToChunks  = 'shaders/';
 var shaderLoader = new ShaderLoader( pathToShaders , pathToChunks );
 
 // global variables for shader and buffer info
