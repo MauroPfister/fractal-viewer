@@ -95,7 +95,7 @@ void main() {
 
     // ray marching parameters (these work well for the moment)
     float eps = eps_multiplicator / resolution.y; // ray marching tolerance
-    int max_iter = 200;             // maximal ray marching iterations
+    //int max_iter = 200;             // maximal ray marching iterations
     float dist_tot_max = 5.0;      // maximal distance before color is set to background color
 
     vec3 color = vec3(0, 0, 0);     // color of object at intersection

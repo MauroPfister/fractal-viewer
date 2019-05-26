@@ -9,6 +9,8 @@ uniform float light_red;
 uniform float light_green;
 uniform float light_blue;
 uniform float eps_multiplicator;
+uniform int max_iter;
+
 
 out vec4 f_color;   // Final color output produced by fragment shader.
 
