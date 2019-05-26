@@ -80,9 +80,9 @@ window.addEventListener('mouseup', e=> {
 
   z_dif = 0;
   y_dif = 0;
-
-
 });
+
+
 
 window.addEventListener('mousemove', e => {
 
@@ -97,9 +97,18 @@ window.addEventListener('mousemove', e => {
     y_dif = (pos.y - pos0.y) / gl.canvas.height * -2/2;            
     //z_ang = ((y_ang % (2*Math.PI)) > (Math.PI/2) || (-y_ang % (2*Math.PI)) > (Math.PI/2))? z_ang0 - z_dif : z_ang0 + z_dif ;
     //y_ang = y_ang0 + y_dif;    
-    
-
   }
+});
+
+
+
+window.addEventListener('wheel', e=> {
+  if (scale > -0.05*event.deltaX){
+    scale += 0.05*event.deltaX;
+  }
+  
+  //wheel_value = wheel_value + 0.01*event.deltaX;
+  
 });
 
 
@@ -126,6 +135,8 @@ function render() {
   m_view = twgl.m4.copy(m_rot);
   twgl.m4.axisRotate(m_view, z_axis, z_dif, m_view);
   twgl.m4.axisRotate(m_view, y_axis, -y_dif, m_view);
+  
+  twgl.m4.scale(m_view, twgl.v3.create(scale, scale, scale, 1.0), m_view)
 
 
   const uniforms = {};
