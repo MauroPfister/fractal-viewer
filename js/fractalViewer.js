@@ -142,12 +142,14 @@ function render() {
   const uniforms = {};
   
   uniforms.m_view = m_view;
-  uniforms.n = 8.0;
+  uniforms.n = power;
   uniforms.resolution = [gl.canvas.width, gl.canvas.height];
   uniforms.light_red = light_red;
   uniforms.light_green = light_green;
   uniforms.light_blue = light_blue;
   uniforms.eps_multiplicator = eps_multiplicator;
+  uniforms.max_iter = max_iter;
+
 
   gl.useProgram(programInfo.program);
   twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);

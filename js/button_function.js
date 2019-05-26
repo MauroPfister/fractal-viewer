@@ -5,9 +5,22 @@ var light_blue = 0.2;
 var scale = 1.0;
 var eps_multiplicator = 2.0;
 
+var max_iter = 200;
+var power = 8.0;
+
+
+function update_power(){
+  power = $('#power_slid').val();
+}
+
+function update_max_iter(){
+  max_iter = $('#max_iter_slid').val();
+}
+
 function update_light_red(){
   light_red = $('#light_red_slid').val();
 }
+
 
 function update_light_green(){
     light_green = $('#light_green_slid').val();
@@ -30,6 +43,8 @@ function reset(){
   m_rot = twgl.m4.identity();
   
   eps_multiplicator = 2.0;
+  max_iter = 200;
+  power = 8.0;
 
   }
 

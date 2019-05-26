@@ -9,6 +9,8 @@ uniform float light_red;
 uniform float light_green;
 uniform float light_blue;
 uniform float eps_multiplicator;
+uniform int max_iter;
+
 
 out vec4 f_color;   // Final color output produced by fragment shader.
 
@@ -16,7 +18,7 @@ out vec4 f_color;   // Final color output produced by fragment shader.
 float dist_estimator(vec3 pos) {
     float bailout = 16.0;
     int iter = 4;
-	float n = 8.0;
+	//loat n = 8.0;
 	vec3 w = pos;
 	float dr = 1.0;     		// escape time length
 	float r = length(w);        // length of the running derivative
