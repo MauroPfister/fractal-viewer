@@ -3,7 +3,7 @@
 vec3 calc_normal( in vec3 p, float eps)
 {
     // first order finite difference normals
-    
+    eps = eps;
     vec2 e = vec2(1.0, -1.0) * 0.57 * eps;
     return normalize( e.xyy*dist_estimator( p + e.xyy ) + 
 					  e.yyx*dist_estimator( p + e.yyx ) + 
@@ -94,8 +94,8 @@ void main() {
     float shininess = 20.0;         // specular coefficient
 
     // ray marching parameters (these work well for the moment)
-    float eps = 2.0 / resolution.y; // ray marching tolerance
-    int max_iter = 100;             // maximal ray marching iterations
+    float eps = eps_multiplicator / resolution.y; // ray marching tolerance
+    int max_iter = 200;             // maximal ray marching iterations
     float dist_tot_max = 5.0;      // maximal distance before color is set to background color
 
     vec3 color = vec3(0, 0, 0);     // color of object at intersection

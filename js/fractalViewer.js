@@ -147,6 +147,7 @@ function render() {
   uniforms.light_red = light_red;
   uniforms.light_green = light_green;
   uniforms.light_blue = light_blue;
+  uniforms.eps_multiplicator = eps_multiplicator;
 
   gl.useProgram(programInfo.program);
   twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
