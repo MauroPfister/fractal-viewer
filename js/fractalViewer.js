@@ -50,10 +50,10 @@ function selectFractal(fractalType) {
   }
 }
   
-var z_ang = 0.0;
-var y_ang = 0.0;
-var z_ang0 = 0.0;
-var y_ang0 = 0.0;
+// var z_ang = 0.0;
+// var y_ang = 0.0;
+// var z_ang0 = 0.0;
+// var y_ang0 = 0.0;
 var z_dif = 0;
 var y_dif = 0;
 var mouseDown = false;
@@ -63,6 +63,7 @@ var z_axis = twgl.v3.create(0.0, 0, 1.0);
 var y_axis = twgl.v3.create(0, 1.0, 0);
 
 var m_rot = twgl.m4.identity();
+var m_view = twgl.m4.copy(m_rot);
 
 gl.canvas.addEventListener('mousedown', e=> {
   pos0 = getRelativeMousePosition(e, gl.canvas);
@@ -70,9 +71,17 @@ gl.canvas.addEventListener('mousedown', e=> {
 });
 
 window.addEventListener('mouseup', e=> {
-  z_ang0 = z_ang;
-  y_ang0 = y_ang;
+  //z_ang0 = z_ang;
+  //y_ang0 = y_ang;
   mouseDown = false;
+
+  twgl.m4.axisRotate(m_rot, z_axis, z_dif, m_rot);
+  twgl.m4.axisRotate(m_rot, y_axis, -y_dif, m_rot)
+
+  z_dif = 0;
+  y_dif = 0;
+
+
 });
 
 window.addEventListener('mousemove', e => {
@@ -89,10 +98,7 @@ window.addEventListener('mousemove', e => {
     //z_ang = ((y_ang % (2*Math.PI)) > (Math.PI/2) || (-y_ang % (2*Math.PI)) > (Math.PI/2))? z_ang0 - z_dif : z_ang0 + z_dif ;
     //y_ang = y_ang0 + y_dif;    
     
-    twgl.m4.axisRotate(m_rot, z_axis, z_dif, m_rot);
-    twgl.m4.axisRotate(m_rot, y_axis, -y_dif, m_rot);
 
-    pos0 = pos;
   }
 });
 
@@ -116,10 +122,14 @@ function setupShaders() {
 function render() {
   twgl.resizeCanvasToDisplaySize(gl.canvas);
   gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-            
+  
+  m_view = twgl.m4.copy(m_rot);
+  twgl.m4.axisRotate(m_view, z_axis, z_dif, m_view);
+  twgl.m4.axisRotate(m_view, y_axis, -y_dif, m_view);
+
   const uniforms = {};
   
-  uniforms.m_view = m_rot;
+  uniforms.m_view = m_view;
   uniforms.n = 8.0;
   uniforms.resolution = [gl.canvas.width, gl.canvas.height];
 
