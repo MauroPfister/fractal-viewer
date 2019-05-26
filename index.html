@@ -24,112 +24,96 @@
 </head>
 
 
-
-
 <body>
 
 <style>
-  .container {
+  .main-container {
     margin-top : 100px;
     height : 600px;    
   }
 
-  .row {
-    margin-top : 5%;
-    height : 90%;
-  }
-
-
-  
-  .col-sm-4 {
-    height : inherit;
+  .gray-box {
     background-color : rgb(236, 236, 236);
   }
 
-  .col-sm-8 {
-    height : inherit;
-  }
-
+/*
   canvas {
     height : 100%;
     width : 100%;
-  }
+  }*/
 
-  .mini-box {
-    height: 60px;
-    line-height: 30px;
-  }
-  
-  .mini-box-small{
-    height: 20px;
-    line-height: 30px;
-  }
 </style>
 
 
-<div class="container">
-  <div class="row">
-    <div class="col-sm-4 rounded">
-        
+<div class="container main-container">
+  <div class="row h-100">
+    <div class="col-sm-4 gray-box rounded h-100">
 
-        <div class="col mini-box-small"></div>
-        <div class="col mini-box">
-        <div class="text-center">
+      <form class="form-horizontal" role="form" style="padding-top:20px">
 
-          <div class="dropdown">
-            <button class="btn btn-outline-dark dropdown-toggle" type="button" id="fractalSelection" data-toggle="dropdown"> 
-              Fractal
-            </button>
-            <div class="dropdown-menu test">
+        <!-- Fractal choice -->
+        <div class="form-group row">
+          <label for="dropdown-menu" class="col-sm-4 col-form-label">Fractal</label>
+          <div class="col-sm-8">
+            <div class="dropdown">
+              <button class="form-control btn btn-outline-dark dropdown-toggle" type="button" id="fractalSelection" data-toggle="dropdown"> 
+                Fractal
+              </button>
+              <div class="dropdown-menu test">
                 <a class="dropdown-item" href="#">Rounded box</a>
                 <a class="dropdown-item" href="#">Mandelbulb</a>
                 <a class="dropdown-item" href="#">Mandelbox</a>
                 <a class="dropdown-item" href="#">Juliaset</a>
                 <a class="dropdown-item" href="#">Sierpinski pyramid</a>
               </div>         
-          </div> 
-        </div>
+            </div> 
+          </div>
         </div>
         
+        <!-- Sliders -->
+        <div class="form-group row align-items-center">
+            <label for="light_red_slid" class="col-sm-4 col-form-label">R</label>
+            <div class="col-sm-8 form-horizontal">
+              <input type="range" min="0.0" max="1.0" value="1.0" step="0.01" 
+              class="form-control-range" id="light_red_slid" onchange="update_light_red()"></input>
+            </div>
+        </div>
         
-        <div class="col mini-box">
-          
-          <!-- COLOR SLIDER-->
-          <div class="slidecontainer">
-             <!-- <p> Light red</p> -->
-            <label for="light_red_slid"> R: </label>
-              <input type="range" min="0.0" max="1.0" value="1.0" step="0.01" class="slider" id="light_red_slid" onchange="update_light_red()"></input>
-          </div>        
-          <div class="slidecontainer">
-            <!-- <p> Light green</p> -->
-              <label for="light_red_slid"> G: </label>
-             <input type="range" min="0.0" max="1.0" value="0.2" step="0.01" class="slider" id="light_green_slid" onchange="update_light_green()"></input>
-          </div>        
-          <div class="slidecontainer">
-            <!-- <p> Light blue</p> -->
-            <label for="light_red_slid"> B: </label>
-           <input type="range" min="0.0" max="1.0" value="0.2" step="0.01" class="slider" id="light_blue_slid" onchange="update_light_blue()"></input>
-       </div>               
-       <div class="slidecontainer">
-         
-          <label for="eps_slid"> ε: </label>
-         <input type="range" min="0.0" max="10.0" value="2.0" step="0.1" class="slider" id="eps_slid" onchange="update_eps_multiplicator()"></input>
-      </div>
+        <div class="form-group row align-items-center">
+            <label for="light_green_slid" class="col-sm-4 col-form-label">G</label>
+            <div class="col-sm-8 form-horizontal">
+              <input type="range" min="0.0" max="1.0" value="1.0" step="0.01" 
+              class="form-control-range" id="light_green_slid" onchange="update_light_green()"></input>
+            </div>
+        </div>
+        
+        <div class="form-group row align-items-center">
+            <label for="light_blue_slid" class="col-sm-4 col-form-label">B</label>
+            <div class="col-sm-8 form-horizontal">
+              <input type="range" min="0.0" max="1.0" value="1.0" step="0.01" 
+              class="form-control-range" id="light_blue_slid" onchange="update_light_blue()"></input>
+            </div>
+        </div>
 
-      <br /> 
-      <br />
-      <br />
-      <br /> 
-      <div class="text-center">
-      <button class="btn btn-outline-dark" type="button" onclick="reset()">reset</button>
-      </div>
-    </div>
-      
-    </div>
+        <div class="form-group row align-items-center">
+            <label for="eps_slid" class="col-sm-4 col-form-label">ε</label>
+            <div class="col-sm-8 form-horizontal">
+                <input type="range" min="0.0" max="10.0" value="2.0" step="0.1" 
+                class="form-control-range" id="eps_slid" onchange="update_eps_multiplicator()"></input>
+            </div>
+        </div>
+        
+        <div class="form-group row align-items-center">
+            <div class="col-sm-12 form-horizontal">
+              <button class="form-control btn btn-outline-dark" type="button" onclick="reset_all()">Reset</button>
+            </div>
+        </div>
 
+      </form>
+    </div>
     
-    <div class="col-sm-8">
-      <canvas id="c" class="rounded"></canvas>
+    <div class="col-sm-8 h-100">
+      <canvas id="c" class="h-100 w-100 rounded"></canvas>
     </div>
   
   </div>

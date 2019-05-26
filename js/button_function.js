@@ -25,7 +25,7 @@ function update_eps_multiplicator(){
   requestAnimationFrame(render);
 }
 
-function reset(){
+function reset_all(){
   light_red = 1.0;
   light_green = 0.2;
   light_blue = 0.2;
