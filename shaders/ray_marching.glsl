@@ -80,7 +80,7 @@ void main() {
     // light properties
     int number_of_lights = 2;
     vec3 light_pos[2] = vec3[]( vec3(-3.0, 3.0, 1.0), vec3(-4.0, -3.0, -1.0));
-    vec3 light_col[2] = vec3[]( vec3(0.6, 0.6, 0.9), vec3(0.9, 0.6, 0.6));
+    vec3 light_col[2] = vec3[]( vec3(light_red, light_green, light_blue), vec3(light_red, light_green, light_blue));
     
     //vec3 light_pos = vec3(-3., 3.0, 0.0);
     //vec3 light_col = vec3(1.0 , 1.0, 1.0);

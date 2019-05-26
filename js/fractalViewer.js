@@ -127,11 +127,15 @@ function render() {
   twgl.m4.axisRotate(m_view, z_axis, z_dif, m_view);
   twgl.m4.axisRotate(m_view, y_axis, -y_dif, m_view);
 
+
   const uniforms = {};
   
   uniforms.m_view = m_view;
   uniforms.n = 8.0;
   uniforms.resolution = [gl.canvas.width, gl.canvas.height];
+  uniforms.light_red = light_red;
+  uniforms.light_green = light_green;
+  uniforms.light_blue = light_blue;
 
   gl.useProgram(programInfo.program);
   twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
