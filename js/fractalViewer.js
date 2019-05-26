@@ -97,6 +97,7 @@ window.addEventListener('mousemove', e => {
     y_dif = (pos.y - pos0.y) / gl.canvas.height * -2/2;            
     //z_ang = ((y_ang % (2*Math.PI)) > (Math.PI/2) || (-y_ang % (2*Math.PI)) > (Math.PI/2))? z_ang0 - z_dif : z_ang0 + z_dif ;
     //y_ang = y_ang0 + y_dif;    
+    requestAnimationFrame(render);
   }
 });
 
@@ -153,6 +154,4 @@ function render() {
   twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
   twgl.setUniforms(programInfo, uniforms);
   twgl.drawBufferInfo(gl, bufferInfo);
-
-  requestAnimationFrame(render);
 }

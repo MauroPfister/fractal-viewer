@@ -7,18 +7,22 @@ var eps_multiplicator = 2.0;
 
 function update_light_red(){
   light_red = $('#light_red_slid').val();
+  requestAnimationFrame(render);
 }
 
 function update_light_green(){
     light_green = $('#light_green_slid').val();
+    requestAnimationFrame(render);
 }
 
 function update_light_blue(){
     light_blue = $('#light_blue_slid').val();
+    requestAnimationFrame(render);
 }
 
 function update_eps_multiplicator(){
   eps_multiplicator = $('#eps_slid').val();
+  requestAnimationFrame(render);
 }
 
 function reset(){
@@ -30,6 +34,7 @@ function reset(){
   m_rot = twgl.m4.identity();
   
   eps_multiplicator = 2.0;
+  requestAnimationFrame(render);
 
   }
 
