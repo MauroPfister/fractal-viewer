@@ -53,6 +53,17 @@ $('#light2-color').on('colorpickerChange', function(event) {
     requestAnimationFrame(render);
 });
 
+// reset values
+$('#reset_button').on('click', function() {
+    scale = 1.0;
+    m_rot = twgl.m4.identity();
+
+    eps_multiplicator = 2.0;
+    max_iter = 200;
+    power = 8.0;
+    requestAnimationFrame(render);
+})
+
 
 
 const gl = document.getElementById("c").getContext("webgl2");
@@ -102,6 +113,7 @@ function selectFractal(fractalType) {
 var max_iter = 200;
 var power = 8.0;
 var eps_multiplicator = 2.0;
+var scale = 1.0;
 var light1_color = twgl.v3.create(1.0, 1.0, 1.0);
 var light2_color = twgl.v3.create(1.0, 1.0, 1.0);
 
@@ -152,17 +164,14 @@ window.addEventListener('mousemove', e => {
   }
 });
 
-
-
-window.addEventListener('wheel', e => {
-  if (scale > -0.05*event.deltaX){
-    scale += 0.05*event.deltaX;
-    requestAnimationFrame(render);
-
-  }
-  
-  //wheel_value = wheel_value + 0.01*event.deltaX;
-  
+// zoom into fractal
+gl.canvas.addEventListener('wheel', e => {
+    var newScale = scale * (1 + 0.01*event.deltaY);
+    // restrict zoom 
+    if (newScale < 10 && newScale > 0.01) {
+        scale = newScale;
+        requestAnimationFrame(render);
+    }
 });
 
 
