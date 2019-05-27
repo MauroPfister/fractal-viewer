@@ -1,12 +1,44 @@
 "use strict";
 
+const gl = document.getElementById("c").getContext("webgl2");
+
+// load shaders
+var pathToShaders = 'shaders/';
+var pathToChunks  = 'shaders/';
+var shaderLoader = new ShaderLoader( pathToShaders , pathToChunks );
+
+// global variables for shader and buffer info
+var programInfo;
+var bufferInfo;
+
+// uniforms
+// var max_iter = 200;
+var power = 8.0;
+var eps_multiplicator = 2.0;
+var scale = 1.0;
+var light1_color = twgl.v3.create(1.0, 1.0, 1.0);
+var light2_color = twgl.v3.create(1.0, 1.0, 1.0);
+var julia_im = twgl.v3.create(0.88,0.24, 0.1); 
+var julia_real = 0.18;
+
+
+// global variables for turning viewport with mouse
+var z_dif = 0;
+var y_dif = 0;
+var mouseDown = false;
+var pos0;
+var z_axis = twgl.v3.create(0.0, 0, 1.0);
+var y_axis = twgl.v3.create(0, 1.0, 0);
+var m_rot = twgl.m4.identity();
+var m_view = twgl.m4.identity();
+
+
 // change dropdown button label
 $('.dropdown-menu a').on('click', function() {    
   $('.dropdown-toggle').html($(this).html());   
   var fractalType = $(this).html(); 
   selectFractal(fractalType);
 })
-
 
 // change power of fractal
 $('#power_slid').on('input', function() {
@@ -37,17 +69,6 @@ $('#light2-color').colorpicker({
     color: "#FFFFFF"
 });
 
-$('#Julia-im').colorpicker({
-  useAlpha: true,
-  color: "#FE3D19"
-});
-
-
-$('#Julia-real').on('input', function() {
-  julia_real = $(this).val();
-  requestAnimationFrame(render);
-})
-    
 $('#light1-color').on('colorpickerChange', function(event) {
     var rgbString = event.color.toRgbString();
     var rgbArray = rgbString.split(')')[0].split('(')[1].split(', ');   // very ugly hack to get RGB components in an vector
@@ -64,6 +85,26 @@ $('#light2-color').on('colorpickerChange', function(event) {
     requestAnimationFrame(render);
 });
 
+// change imaginary part of c constant of julia set
+$('#Julia-im').colorpicker({
+  useAlpha: true,
+  color: "#FE3D19"
+});
+
+$('#Julia-im').on('colorpickerChange', function(event) {
+  var rgbString = event.color.toRgbString();
+  var rgbArray = rgbString.split(')')[0].split('(')[1].split(', ');   // very ugly hack to get RGB components in an vector
+  julia_im = rgbArray;
+  twgl.v3.divScalar(julia_im, 255.0, julia_im);
+  requestAnimationFrame(render);
+});
+
+// change real part of c constant of julia set
+$('#Julia-real').on('input', function() {
+  julia_real = $(this).val();
+  requestAnimationFrame(render);
+})
+    
 // reset values
 $('#reset_button').on('click', function() {
     scale = 1.0;
@@ -74,19 +115,38 @@ $('#reset_button').on('click', function() {
     requestAnimationFrame(render);
 })
 
-$('#Julia-im').on('colorpickerChange', function(event) {
-  var rgbString = event.color.toRgbString();
-  var rgbArray = rgbString.split(')')[0].split('(')[1].split(', ');   // very ugly hack to get RGB components in an vector
-  julia_im = rgbArray;
-  twgl.v3.divScalar(julia_im, 255.0, julia_im);
+// mouse event listeners
+gl.canvas.addEventListener('mousedown', e => {
+  pos0 = getRelativeMousePosition(e, gl.canvas);
+  mouseDown = true;
+});
+
+window.addEventListener('mouseup', e => {
+  mouseDown = false;
+
+  twgl.m4.axisRotate(m_rot, z_axis, z_dif, m_rot);
+  twgl.m4.axisRotate(m_rot, y_axis, -y_dif, m_rot)
+
+  z_dif = 0;
+  y_dif = 0;
+});
+
+// redraw fractal when window is resized
+window.addEventListener('resize', e => {
   requestAnimationFrame(render);
 });
 
+// turn fractal when mouse clicked and dragged
+window.addEventListener('mousemove', e => {
 
+  if (mouseDown == true) {
+    const pos = getRelativeMousePosition(e, gl.canvas);
+    z_dif = (pos.x - pos0.x) / gl.canvas.width * 2;
+    y_dif = -(pos.y - pos0.y) / gl.canvas.height * 2;             
+    requestAnimationFrame(render);
+  }
+});
 
-
-
-const gl = document.getElementById("c").getContext("webgl2");
 function getRelativeMousePosition(event, target) {
   var rect = gl.canvas.getBoundingClientRect();
   
@@ -96,14 +156,16 @@ function getRelativeMousePosition(event, target) {
   }
 }
 
-// load shaders
-var pathToShaders = 'shaders/';
-var pathToChunks  = 'shaders/';
-var shaderLoader = new ShaderLoader( pathToShaders , pathToChunks );
+// zoom into fractal
+gl.canvas.addEventListener('wheel', e => {
+    var newScale = scale * (1 + 0.01*event.deltaY);
+    // restrict zoom 
+    if (newScale < 10 && newScale > 0.01) {
+        scale = newScale;
+        requestAnimationFrame(render);
+    }
+});
 
-// global variables for shader and buffer info
-var programInfo;
-var bufferInfo;
 
 shaderLoader.shaderSetLoaded = function() { setupShaders(); }
 
@@ -130,80 +192,6 @@ function selectFractal(fractalType) {
   }
 }
   
-
-// uniforms
-// REORGANIZE THIS FUCKING MESS.....
-// var max_iter = 200;
-var power = 8.0;
-var eps_multiplicator = 2.0;
-var scale = 1.0;
-var light1_color = twgl.v3.create(1.0, 1.0, 1.0);
-var light2_color = twgl.v3.create(1.0, 1.0, 1.0);
-var julia_im = twgl.v3.create(0.88,0.24, 0.1); 
-var julia_real = 0.18;
-
-
-var z_dif = 0;
-var y_dif = 0;
-var mouseDown = false;
-var pos0;
-
-var z_axis = twgl.v3.create(0.0, 0, 1.0);
-var y_axis = twgl.v3.create(0, 1.0, 0);
-
-var m_rot = twgl.m4.identity();
-var m_view = twgl.m4.copy(m_rot);
-
-gl.canvas.addEventListener('mousedown', e => {
-  pos0 = getRelativeMousePosition(e, gl.canvas);
-  mouseDown = true;
-});
-
-window.addEventListener('mouseup', e => {
-  //z_ang0 = z_ang;
-  //y_ang0 = y_ang;
-  mouseDown = false;
-
-  twgl.m4.axisRotate(m_rot, z_axis, z_dif, m_rot);
-  twgl.m4.axisRotate(m_rot, y_axis, -y_dif, m_rot)
-
-  z_dif = 0;
-  y_dif = 0;
-});
-
-// redraw fractal when window is resized
-window.addEventListener('resize', e => {
-  requestAnimationFrame(render);
-});
-
-window.addEventListener('mousemove', e => {
-
-  if (mouseDown == true) {
-    const pos = getRelativeMousePosition(e, gl.canvas);
-
-    // pos is in pixel coordinates for the canvas.
-    // so convert to WebGL clip space coordinates
-    //x = pos.x / gl.canvas.width  *  2 - 1;
-    //y = pos.y / gl.canvas.height * -2 + 1;
-    z_dif = (pos.x - pos0.x) / gl.canvas.width  *  2/2;
-    y_dif = (pos.y - pos0.y) / gl.canvas.height * -2/2;            
-    //z_ang = ((y_ang % (2*Math.PI)) > (Math.PI/2) || (-y_ang % (2*Math.PI)) > (Math.PI/2))? z_ang0 - z_dif : z_ang0 + z_dif ;
-    //y_ang = y_ang0 + y_dif;    
-    requestAnimationFrame(render);
-  }
-});
-
-// zoom into fractal
-gl.canvas.addEventListener('wheel', e => {
-    var newScale = scale * (1 + 0.01*event.deltaY);
-    // restrict zoom 
-    if (newScale < 10 && newScale > 0.01) {
-        scale = newScale;
-        requestAnimationFrame(render);
-    }
-});
-
-
 // setup shader and buffer information
 function setupShaders() {
   var vs = shaderLoader.shaders.vert;
@@ -230,20 +218,18 @@ function render() {
   
   twgl.m4.scale(m_view, twgl.v3.create(scale, scale, scale, 1.0), m_view)
 
-
-  const uniforms = {};
+  const uniforms = {
+    m_view : m_view,
+    n : power,
+    resolution : [gl.canvas.width, gl.canvas.height],
+    light1_color : light1_color,
+    light2_color : light2_color,
+    eps_multiplicator : eps_multiplicator,
+    max_iter : 200,
+    julia_real : julia_real,
+    julia_im : julia_im,
+  };
   
-  uniforms.m_view = m_view;
-  uniforms.n = power;
-  uniforms.resolution = [gl.canvas.width, gl.canvas.height];
-  uniforms.light1_color = light1_color;
-  uniforms.light2_color = light2_color;
-  uniforms.eps_multiplicator = eps_multiplicator;
-  uniforms.max_iter = 200;
-  uniforms.julia_real = julia_real;
-  uniforms.julia_im = julia_im;
-
-
   gl.useProgram(programInfo.program);
   twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
   twgl.setUniforms(programInfo, uniforms);
