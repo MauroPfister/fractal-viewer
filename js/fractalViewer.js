@@ -44,12 +44,14 @@ $('.dropdown-menu a').on('click', function() {
 // change epsilon
 $('#eps_slid').on('input', function() {
     eps_multiplicator = $(this).val();
+    $('#eps_slid_indicator').text(eps_multiplicator);
     requestAnimationFrame(render);
 })
 
 // change power of fractal
 $('#shape_factor-slid').on('input', function() {
     shape_factor = $(this).val();
+    $('#shape_factor_slid_indicator').text(shape_factor);
     requestAnimationFrame(render);
 })
 
@@ -136,7 +138,9 @@ $('#reset_button').on('click', function() {
 
   // reset sliders and colorpickers to default values
   $('#eps_slid').val(eps_multiplicator);
+  $('#eps_slid_indicator').text(eps_multiplicator);
   $('#shape_factor-slid').val(shape_factor);
+  $('#shape_factor_slid_indicator').text(shape_factor);
   $('#light1-color').colorpicker('setValue', "#FFFFFF");
   $('#light2-color').colorpicker('setValue', "#FFFFFF");
   requestAnimationFrame(render);
@@ -207,7 +211,6 @@ function selectFractal(fractalType) {
       break;
     case "Mandelbox":
       shaderLoader.load( 'mandelbox.frag' );
-      scale = 2.0;
       break;
     case "Juliaset":
       shaderLoader.load( 'juliaset.frag' );

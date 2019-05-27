@@ -36,6 +36,9 @@ void sphereFold(inout vec3 z, inout float dz) {
 
 // distance estimator for mandelbox fractal
 float dist_estimator(vec3 pos) {
+	// scale fractal to be within same dimensions of mandelbulb
+	pos = pos * 2.0;
+	
 	int iter = int(shape_factor);
 	vec3 w = pos;
 	float dr = 1.0;			// escape time length

@@ -78,18 +78,20 @@
         
         <div class="form-group row align-items-center">
             <label for="eps_slid" class="col-sm-4 col-form-label">Threshold</label>
-            <div class="col-sm-8 form-horizontal">
-                <input type="range" min="0.1" max="10.0" value="2.0" step="0.1" 
+            <div class="col-sm-6 form-horizontal">
+                <input type="range" min="0.05" max="5.0" value="2.0" step="0.05" 
                 class="form-control-range" id="eps_slid"></input>
             </div>
+            <div class="col-sm-2 form-horizontal" id="eps_slid_indicator">2.0</div>
         </div>
         
         <div class="form-group row align-items-center">
             <label for="shape_factor-slid" class="col-sm-4 col-form-label">Shape factor</label>
-            <div class="col-sm-8 form-horizontal">
+            <div class="col-sm-6 form-horizontal">
                 <input type="range" min="0.1" max="30.0" value="8.0" step="0.1"
                 class="form-control-range" id="shape_factor-slid"></input>
             </div>
+            <div class="col-sm-2 form-horizontal" id="shape_factor_slid_indicator">8.0</div>
         </div>
 
         <!-- colorpicker -->
@@ -136,7 +138,7 @@
         </div>
         -->
 
-
+        <!-- shading option -->
         <div class="form-group row">
           <div class="col-sm-4 form-horizontal">Options</div>
             <div class="col-sm-8 form-horizontal">
