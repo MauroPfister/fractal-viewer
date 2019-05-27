@@ -50,20 +50,15 @@
 
         <!-- fractal choice -->
         <div class="form-group row">
-          <label for="dropdown-menu" class="col-sm-4 col-form-label">Fractal</label>
+          <label for="fractalSelection" class="col-sm-4 col-form-label">Fractal</label>
           <div class="col-sm-8">
-            <div class="dropdown">
-              <button class="form-control btn btn-outline-dark dropdown-toggle" type="button" id="fractalSelection" data-toggle="dropdown"> 
-                Fractal
-              </button>
-              <div class="dropdown-menu test">
-                <a class="dropdown-item" href="#">Rounded box</a>
-                <a class="dropdown-item" href="#">Mandelbulb</a>
-                <a class="dropdown-item" href="#">Mandelbox</a>
-                <a class="dropdown-item" href="#">Juliaset</a>
-                <a class="dropdown-item" href="#">Sierpinski pyramid</a>
-              </div>         
-            </div> 
+            <select class="form-control dropdown-toggle" type="dropdown" id="fractalSelection">
+              <option selected>Mandelbulb</option>
+              <option>Mandelbox</option>
+              <option>Juliaset</option>
+              <option>Sierpinski pyramid</option>
+              <option>Rounded box</option>
+            </select>
           </div>
         </div>
         
@@ -166,7 +161,7 @@
         <!-- reset button -->
         <div class="form-group row align-items-center">
             <div class="col-sm-12 form-horizontal">
-              <button id="reset_button" class="form-control btn btn-outline-dark" type="button">Reset</button>
+              <button id="reset_button" class="form-control btn" type="button">Reset</button>
             </div>
         </div>
 

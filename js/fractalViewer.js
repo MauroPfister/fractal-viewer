@@ -35,9 +35,8 @@ var m_view = twgl.m4.identity();
 
 
 // change dropdown button label
-$('.dropdown-menu a').on('click', function() {    
-  $('.dropdown-toggle').html($(this).html());   
-  var fractalType = $(this).html(); 
+$('#fractalSelection').on('change', function() {  
+  var fractalType = $(this).val(); 
   selectFractal(fractalType);
 })
 
@@ -267,3 +266,7 @@ function render() {
   twgl.setUniforms(programInfo, uniforms);
   twgl.drawBufferInfo(gl, bufferInfo);
 }
+
+// load mandelbulb fractal when webpage is loaded
+selectFractal("Mandelbulb");
+
