@@ -3,8 +3,7 @@
 vec3 calc_normal( in vec3 p, float eps)
 {
     // first order finite difference normals
-    eps = eps;
-    vec2 e = vec2(1.0, -1.0) * 0.57 * eps;
+    vec2 e = vec2(1.0, -1.0) * 0.57 * eps * 2.0;
     return normalize( e.xyy*dist_estimator( p + e.xyy ) + 
 					  e.yyx*dist_estimator( p + e.yyx ) + 
 					  e.yxy*dist_estimator( p + e.yxy ) + 
@@ -59,12 +58,18 @@ int shadow( vec3 p, vec3 n, vec3 light_pos, int max_iter, float dist_tot_max, fl
 }
 
 // calculate ambient occlusion at point p
-float ambient_occlusion() {
+float ambient_occlusion(float eps, vec3 n, vec3 p) {
     // ambient occlusion fake
-    //float AO_step = 5 * eps;
-    //float AO_fac = (AO_step - dist_estimator(p + AO_step * n)) / AO_step;
-    //color *= vec3(1.0 - 0.6 * AO_fac*AO_fac);
-    return 1.0;
+    float samples = 10.0;
+    float occlusion;
+    eps = 1.0*eps;
+    for( occlusion = 1.0; samples > 0.2; samples--){
+        occlusion -=  30.0 * ( samples*eps - dist_estimator( p + samples*eps*n ) ) / (samples);   
+    }
+    // if (occlusion < 0.){
+    //     return 0.0;
+    // }
+    return clamp(occlusion, 0., 1.);
 }
 
 
@@ -139,9 +144,16 @@ void main() {
                     if ((dot_nl > 0.0) && (dot_vr > 0.0)) {
                         color += m_spec * light_col[light] * pow(dot_vr, shininess);
                     } 
-                }
+                }            
             }
+        } else {
+            color = vec3(m_dif);
         } 
+
+        // false ambient occlusion
+        if ( AO_on == 1) {
+            color *= ambient_occlusion(eps, n, p);
+        }   
     } else {
         // ray hits sky
         color = sky_col * (0.7 + 0.3 * (0.5 * dot( normalize(r_dir), normalize(light_pos[0]) ) 
