@@ -13,7 +13,7 @@ out vec4 f_color;   // Final color output produced by fragment shader.
 const float foldingLimit = 1.0;
 const float fixedRadius2 = 1.5; 
 const float minRadius2 = 0.1;
-const float Scale = -2.0;
+const float scale = -2.0;
 
 void boxFold(inout vec3 z, inout float dz) {
 	z = clamp(z, -foldingLimit, foldingLimit) * 2.0 - z;
@@ -44,8 +44,8 @@ float dist_estimator(vec3 pos) {
 		boxFold(pos, dr);
 		sphereFold(pos, dr);
 
-		pos = Scale * pos + w;
-		dr = dr * abs(Scale) + 1.0;
+		pos = scale * pos + w;
+		dr = dr * abs(scale) + 1.0;
 	}
 
 	float r = length(pos);

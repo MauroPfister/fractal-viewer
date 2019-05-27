@@ -86,6 +86,7 @@ $('#light2-color').on('colorpickerChange', function(event) {
 });
 
 // change imaginary part of c constant of julia set
+/*
 $('#Julia-im').colorpicker({
   useAlpha: true,
   color: "#FE3D19"
@@ -104,6 +105,7 @@ $('#Julia-real').on('input', function() {
   julia_real = $(this).val();
   requestAnimationFrame(render);
 })
+*/
     
 // reset values
 $('#reset_button').on('click', function() {
