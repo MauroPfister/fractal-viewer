@@ -68,13 +68,13 @@
         </div>
         
         <!-- setting sliders -->
-        <div class="form-group row align-items-center">
+        <!-- <div class="form-group row align-items-center">
             <label for="max_iter_slid" class="col-sm-4 col-form-label">N</label>
             <div class="col-sm-8 form-horizontal">
                 <input type="range" min="1" max="500" value="200" step="1" 
                 class="form-control-range" id="max_iter_slid"></input>
             </div>
-        </div>
+        </div> -->
         
         <div class="form-group row align-items-center">
             <label for="eps_slid" class="col-sm-4 col-form-label">ε</label>
@@ -112,6 +112,25 @@
                     <span class="input-group-text colorpicker-input-addon"><i></i></span>
                   </span>
                 </div>
+          </div>
+        </div>
+
+        <div class="form-group row align-items-center">
+          <label for="Julia-im" class="col-sm-6 col-form-label">Julia imaginary part</label>
+          <div class="col-sm-6 form-horizontal">
+              <div id="Julia-im" class="input-group" title="Using input value">
+                  <span class="input-group-append">
+                    <span class="input-group-text colorpicker-input-addon"><i></i></span>
+                  </span>
+                </div>
+          </div>
+        </div>
+
+        <div class="form-group row align-items-center">
+          <label for="Julia-real" class="col-sm-4 col-form-label">Julia real part</label>
+          <div class="col-sm-8 form-horizontal">
+              <input type="range" min="0." max="1.0" value="0.18" step="0.01"
+              class="form-control-range" id="Julia-real"></input>
           </div>
         </div>
 

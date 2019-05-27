@@ -15,10 +15,10 @@ $('#power_slid').on('input', function() {
 })
 
 // change max iterations
-$('#max_iter_slid').on('input', function() {
-    max_iter = $(this).val();
-    requestAnimationFrame(render);
-})
+// $('#max_iter_slid').on('input', function() {
+//     max_iter = $(this).val();
+//     requestAnimationFrame(render);
+// })
 
 // change epsilon
 $('#eps_slid').on('input', function() {
@@ -36,6 +36,17 @@ $('#light2-color').colorpicker({
     useAlpha: false,
     color: "#FFFFFF"
 });
+
+$('#Julia-im').colorpicker({
+  useAlpha: true,
+  color: "#FE3D19"
+});
+
+
+$('#Julia-real').on('input', function() {
+  julia_real = $(this).val();
+  requestAnimationFrame(render);
+})
     
 $('#light1-color').on('colorpickerChange', function(event) {
     var rgbString = event.color.toRgbString();
@@ -63,6 +74,16 @@ $('#reset_button').on('click', function() {
     power = 8.0;
     requestAnimationFrame(render);
 })
+
+$('#Julia-im').on('colorpickerChange', function(event) {
+  var rgbString = event.color.toRgbString();
+  var rgbArray = rgbString.split(')')[0].split('(')[1].split(', ');   // very ugly hack to get RGB components in an vector
+  julia_im = rgbArray;
+  twgl.v3.divScalar(julia_im, 255.0, julia_im);
+  requestAnimationFrame(render);
+});
+
+
 
 
 
@@ -99,6 +120,9 @@ function selectFractal(fractalType) {
     case "Mandelbox":
       shaderLoader.load( 'mandelbox.frag' );
       break;
+    case "Juliaset":
+      shaderLoader.load( 'julia.frag' );
+      break;    
     case "Sierpinski pyramid":
       shaderLoader.load( 'pyramid.frag' );
       break;
@@ -110,12 +134,15 @@ function selectFractal(fractalType) {
 
 // uniforms
 // REORGANIZE THIS FUCKING MESS.....
-var max_iter = 200;
+// var max_iter = 200;
 var power = 8.0;
 var eps_multiplicator = 2.0;
 var scale = 1.0;
 var light1_color = twgl.v3.create(1.0, 1.0, 1.0);
 var light2_color = twgl.v3.create(1.0, 1.0, 1.0);
+var julia_im = twgl.v3.create(0.88,0.24, 0.1); 
+var julia_real = 0.18;
+
 
 var z_dif = 0;
 var y_dif = 0;
@@ -210,7 +237,9 @@ function render() {
   uniforms.light1_color = light1_color;
   uniforms.light2_color = light2_color;
   uniforms.eps_multiplicator = eps_multiplicator;
-  uniforms.max_iter = max_iter;
+  uniforms.max_iter = 200;
+  uniforms.julia_real = julia_real;
+  uniforms.julia_im = julia_im;
 
 
   gl.useProgram(programInfo.program);
