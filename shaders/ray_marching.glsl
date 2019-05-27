@@ -79,7 +79,7 @@ void main() {
 
     // light properties
     int number_of_lights = 2;
-    vec3 light_pos[2] = vec3[]( vec3(-3.0, 3.0, 1.0), vec3(-4.0, -3.0, -1.0));
+    vec3 light_pos[2] = vec3[]( 5.0 * vec3(-3.0, 3.0, 1.0), 5.0 * vec3(-4.0, -3.0, -1.0));
     vec3 light_col[2] = vec3[]( light1_color, light2_color );
     
     // sky colour
