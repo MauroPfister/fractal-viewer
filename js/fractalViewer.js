@@ -16,8 +16,8 @@ var max_iter = 200;
 var shape_factor = 8.0;
 var eps_multiplicator = 2.0;
 var scale = 1.0;
-var light1_color = twgl.v3.create(1.0, 1.0, 1.0);
-var light2_color = twgl.v3.create(1.0, 1.0, 1.0);
+var light1_color = twgl.v3.create(1.0, 1.0, 0.0);
+var light2_color = twgl.v3.create(153/255, 94/255, 38/255);
 var lighting_on = 1;
 var shadow_on = 1;
 var AO_on = 0;
@@ -34,7 +34,7 @@ var m_rot = twgl.m4.identity();
 var m_view = twgl.m4.identity();
 
 
-// change dropdown button label
+// select fractal
 $('#fractalSelection').on('change', function() {  
   var fractalType = $(this).val(); 
   selectFractal(fractalType);
@@ -47,11 +47,28 @@ $('#eps_slid').on('input', function() {
     requestAnimationFrame(render);
 })
 
-// change power of fractal
+// reset epsilon default value on double click
+$('#eps_slid').on('dblclick', function() {
+  eps_multiplicator = 2.0
+  $('#eps_slid').val(eps_multiplicator);
+  $('#eps_slid_indicator').text(eps_multiplicator);
+  requestAnimationFrame(render);
+})
+
+
+// change shape_factor
 $('#shape_factor-slid').on('input', function() {
     shape_factor = $(this).val();
     $('#shape_factor_slid_indicator').text(shape_factor);
     requestAnimationFrame(render);
+})
+
+// reset shape_factor default value on double click
+$('#shape_factor-slid').on('dblclick', function() {
+  shape_factor = 8.0
+  $('#shape_factor-slid').val(shape_factor);
+  $('#shape_factor_slid_indicator').text(shape_factor);
+  requestAnimationFrame(render);
 })
 
 // change max iterations
@@ -64,12 +81,12 @@ $('#shape_factor-slid').on('input', function() {
 // change light colors
 $('#light1-color').colorpicker({
     useAlpha: false,
-    color: "#FFFFFF"
+    color: "#ffff00"
 });
 
 $('#light2-color').colorpicker({
     useAlpha: false,
-    color: "#FFFFFF"
+    color: "rgb(153, 94, 38)"
 });
 
 $('#light1-color').on('colorpickerChange', function(event) {
@@ -128,22 +145,18 @@ $('#AO_check').on('change', function() {
   requestAnimationFrame(render);
 })
     
-// reset all settings to standard values
-$('#reset_button').on('click', function() {
+
+// redraw fractal when window is resized
+window.addEventListener('resize', e => {
+  requestAnimationFrame(render);
+});
+
+// mouse event listeners
+gl.canvas.addEventListener('dblclick', e => {
   scale = 1.0;
   m_rot = twgl.m4.identity();
-  eps_multiplicator = 2.0;
-  shape_factor = 8.0;
-
-  // reset sliders and colorpickers to default values
-  $('#eps_slid').val(eps_multiplicator);
-  $('#eps_slid_indicator').text(eps_multiplicator);
-  $('#shape_factor-slid').val(shape_factor);
-  $('#shape_factor_slid_indicator').text(shape_factor);
-  $('#light1-color').colorpicker('setValue', "#FFFFFF");
-  $('#light2-color').colorpicker('setValue', "#FFFFFF");
   requestAnimationFrame(render);
-})
+});
 
 // mouse event listeners
 gl.canvas.addEventListener('mousedown', e => {
@@ -161,10 +174,6 @@ window.addEventListener('mouseup', e => {
   y_dif = 0;
 });
 
-// redraw fractal when window is resized
-window.addEventListener('resize', e => {
-  requestAnimationFrame(render);
-});
 
 // turn fractal when mouse clicked and dragged
 window.addEventListener('mousemove', e => {
