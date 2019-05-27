@@ -70,7 +70,6 @@ $('#reset_button').on('click', function() {
     m_rot = twgl.m4.identity();
 
     eps_multiplicator = 2.0;
-    max_iter = 200;
     power = 8.0;
     requestAnimationFrame(render);
 })
@@ -172,7 +171,10 @@ window.addEventListener('mouseup', e => {
   y_dif = 0;
 });
 
-
+// redraw fractal when window is resized
+window.addEventListener('resize', e => {
+  requestAnimationFrame(render);
+});
 
 window.addEventListener('mousemove', e => {
 
