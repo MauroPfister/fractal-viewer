@@ -12,14 +12,15 @@ var programInfo;
 var bufferInfo;
 
 // uniforms
-// var max_iter = 200;
+var max_iter = 200;
 var shape_factor = 8.0;
 var eps_multiplicator = 2.0;
 var scale = 1.0;
 var light1_color = twgl.v3.create(1.0, 1.0, 1.0);
 var light2_color = twgl.v3.create(1.0, 1.0, 1.0);
-var julia_im = twgl.v3.create(0.88,0.24, 0.1); 
-var julia_real = 0.18;
+var lighting_on = 1;
+var shadow_on = 1;
+var AO_on = 1;
 
 
 // global variables for turning viewport with mouse
@@ -40,6 +41,12 @@ $('.dropdown-menu a').on('click', function() {
   selectFractal(fractalType);
 })
 
+// change epsilon
+$('#eps_slid').on('input', function() {
+    eps_multiplicator = $(this).val();
+    requestAnimationFrame(render);
+})
+
 // change power of fractal
 $('#shape_factor-slid').on('input', function() {
     shape_factor = $(this).val();
@@ -52,11 +59,6 @@ $('#shape_factor-slid').on('input', function() {
 //     requestAnimationFrame(render);
 // })
 
-// change epsilon
-$('#eps_slid').on('input', function() {
-    eps_multiplicator = $(this).val();
-    requestAnimationFrame(render);
-})
 
 // change light colors
 $('#light1-color').colorpicker({
@@ -106,6 +108,24 @@ $('#Julia-real').on('input', function() {
   requestAnimationFrame(render);
 })
 */
+
+// lighting on
+$('#lighting_check').on('change', function() {
+  lighting_on = $(this).is(":checked") ? 1 : 0;
+  requestAnimationFrame(render);
+})
+
+// shadows on
+$('#shadow_check').on('change', function() {
+  shadow_on = $(this).is(":checked") ? 1 : 0;
+  requestAnimationFrame(render);
+})
+
+// AO on
+$('#AO_check').on('change', function() {
+  AO_on = $(this).is(":checked") ? 1 : 0;
+  requestAnimationFrame(render);
+})
     
 // reset all settings to standard values
 $('#reset_button').on('click', function() {
@@ -233,9 +253,10 @@ function render() {
     light1_color : light1_color,
     light2_color : light2_color,
     eps_multiplicator : eps_multiplicator,
-    max_iter : 200,
-    julia_real : julia_real,
-    julia_im : julia_im,
+    max_iter : max_iter,
+    lighting_on : lighting_on,
+    shadow_on : shadow_on,
+    AO_on : AO_on,
   };
   
   gl.useProgram(programInfo.program);

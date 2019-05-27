@@ -112,34 +112,36 @@ void main() {
     if ( dist_tot < dist_tot_max ) {
         // ray hits fractal
 
-        // calculate contribution of each light
-        for(int light = 0; light < number_of_lights; light++){
+        if ( lighting_on == 1 ) {
+            // calculate contribution of each light
+            for(int light = 0; light < number_of_lights; light++){
 
-            // determine if point is shadowed
-            int shadow = shadow( p, n, light_pos[light], max_iter, dist_tot_max, eps );
+                // determine if point is shadowed
+                int shadow = shadow( p, n, light_pos[light], max_iter, dist_tot_max, eps ) * shadow_on;
 
-            // phong lighting model
-            if ( shadow == 0 ) {        
-                // ambient component
-                color += vec3(0.05 * m_dif * light_col[light]);
+                // phong lighting model
+                if ( shadow == 0 ) {        
+                    // ambient component
+                    color += vec3(0.05 * m_dif * light_col[light]);
 
-                vec3 l = light_pos[light] - p;
-                vec3 r = reflect(-l, n);
-                vec3 v = eye - p;
-                float dot_nl = dot(n, normalize(l));
-                float dot_vr = dot(normalize(v), normalize(r));
+                    vec3 l = light_pos[light] - p;
+                    vec3 r = reflect(-l, n);
+                    vec3 v = eye - p;
+                    float dot_nl = dot(n, normalize(l));
+                    float dot_vr = dot(normalize(v), normalize(r));
 
-                // diffuse component
-                if (dot_nl > 0.0) {
-                    color += m_dif * light_col[light] * dot_nl;
+                    // diffuse component
+                    if (dot_nl > 0.0) {
+                        color += m_dif * light_col[light] * dot_nl;
+                    }
+
+                    // specular component
+                    if ((dot_nl > 0.0) && (dot_vr > 0.0)) {
+                        color += m_spec * light_col[light] * pow(dot_vr, shininess);
+                    } 
                 }
-
-                // specular component
-                if ((dot_nl > 0.0) && (dot_vr > 0.0)) {
-                    color += m_spec * light_col[light] * pow(dot_vr, shininess);
-                } 
             }
-        }
+        } 
     } else {
         // ray hits sky
         color = sky_col * (0.7 + 0.3 * (0.5 * dot( normalize(r_dir), normalize(light_pos[0]) ) 

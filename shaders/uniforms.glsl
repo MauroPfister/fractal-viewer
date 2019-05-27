@@ -5,3 +5,6 @@ uniform vec3 light1_color;
 uniform vec3 light2_color;
 uniform float eps_multiplicator;
 uniform int max_iter;
+uniform int lighting_on;
+uniform int shadow_on;
+uniform int AO_on;
