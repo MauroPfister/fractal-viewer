@@ -20,7 +20,7 @@ var light1_color = twgl.v3.create(1.0, 1.0, 1.0);
 var light2_color = twgl.v3.create(1.0, 1.0, 1.0);
 var lighting_on = 1;
 var shadow_on = 1;
-var AO_on = 1;
+var AO_on = 0;
 
 
 // global variables for turning viewport with mouse
