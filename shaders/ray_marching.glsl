@@ -59,17 +59,12 @@ int shadow( vec3 p, vec3 n, vec3 light_pos, int max_iter, float dist_tot_max, fl
 
 // calculate ambient occlusion at point p
 float ambient_occlusion(float eps, vec3 n, vec3 p) {
-    // ambient occlusion fake
     float samples = 10.0;
     float occlusion;
-    eps = 1.0*eps;
     for( occlusion = 1.0; samples > 0.2; samples--){
-        occlusion -=  30.0 * ( samples*eps - dist_estimator( p + samples*eps*n ) ) / (samples);   
+        occlusion -=  0.25 * ( samples*eps - dist_estimator( p + samples*eps*n ) ) / (samples * eps);   
     }
-    // if (occlusion < 0.){
-    //     return 0.0;
-    // }
-    return clamp(occlusion, 0., 1.);
+    return clamp(occlusion, 0.0, 1.0);
 }
 
 
