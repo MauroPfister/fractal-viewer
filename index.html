@@ -12,12 +12,15 @@
       border: 0;
       overflow: hidden; /*  Disable scrollbars */
       display: block;  /* No floating content on sides */
+      user-select: none;
     }
     </style>
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link href="lib/bootstrap-colorpicker/bootstrap-colorpicker.min.css" rel="stylesheet">
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
   
@@ -36,12 +39,6 @@
     background-color : rgb(236, 236, 236);
   }
 
-/*
-  canvas {
-    height : 100%;
-    width : 100%;
-  }*/
-
 </style>
 
 
@@ -51,7 +48,7 @@
 
       <form class="form-horizontal" role="form" style="padding-top:20px">
 
-        <!-- Fractal choice -->
+        <!-- fractal choice -->
         <div class="form-group row">
           <label for="dropdown-menu" class="col-sm-4 col-form-label">Fractal</label>
           <div class="col-sm-8">
@@ -70,36 +67,12 @@
           </div>
         </div>
         
-        <!-- Sliders -->
-        <div class="form-group row align-items-center">
-            <label for="light_red_slid" class="col-sm-4 col-form-label">R</label>
-            <div class="col-sm-8 form-horizontal">
-              <input type="range" min="0.0" max="1.0" value="1.0" step="0.01" 
-              class="form-control-range" id="light_red_slid" onchange="update_light_red()"></input>
-            </div>
-        </div>
-        
-        <div class="form-group row align-items-center">
-            <label for="light_green_slid" class="col-sm-4 col-form-label">G</label>
-            <div class="col-sm-8 form-horizontal">
-              <input type="range" min="0.0" max="1.0" value="1.0" step="0.01" 
-              class="form-control-range" id="light_green_slid" onchange="update_light_green()"></input>
-            </div>
-        </div>
-        
-        <div class="form-group row align-items-center">
-            <label for="light_blue_slid" class="col-sm-4 col-form-label">B</label>
-            <div class="col-sm-8 form-horizontal">
-              <input type="range" min="0.0" max="1.0" value="1.0" step="0.01" 
-              class="form-control-range" id="light_blue_slid" onchange="update_light_blue()"></input>
-            </div>
-        </div>
-
+        <!-- setting sliders -->
         <div class="form-group row align-items-center">
             <label for="max_iter_slid" class="col-sm-4 col-form-label">N</label>
             <div class="col-sm-8 form-horizontal">
                 <input type="range" min="0" max="500" value="200" step="1" 
-                class="form-control-range" id="max_iter_slid" onchange="update_max_iter()"></input>
+                class="form-control-range" id="max_iter_slid"></input>
             </div>
         </div>
         
@@ -107,7 +80,7 @@
             <label for="eps_slid" class="col-sm-4 col-form-label">ε</label>
             <div class="col-sm-8 form-horizontal">
                 <input type="range" min="0.0" max="10.0" value="2.0" step="0.1" 
-                class="form-control-range" id="eps_slid" onchange="update_eps_multiplicator()"></input>
+                class="form-control-range" id="eps_slid"></input>
             </div>
         </div>
         
@@ -115,10 +88,33 @@
             <label for="power_slid" class="col-sm-4 col-form-label">n</label>
             <div class="col-sm-8 form-horizontal">
                 <input type="range" min="0.1" max="30.0" value="8.0" step="0.1"
-                class="form-control-range" id="power_slid" onchange="update_power()"></input>
+                class="form-control-range" id="power_slid"></input>
             </div>
         </div>
+
+        <!-- colorpicker -->
+        <div class="form-group row align-items-center">
+          <label for="light1-color" class="col-sm-6 col-form-label">Light 1 color</label>
+          <div class="col-sm-6 form-horizontal">
+              <div id="light1-color" class="input-group" title="Using input value">
+                  <span class="input-group-append">
+                    <span class="input-group-text colorpicker-input-addon"><i></i></span>
+                  </span>
+                </div>
+          </div>
+        </div>
         
+        <div class="form-group row align-items-center">
+          <label for="light2-color" class="col-sm-6 col-form-label">Light 2 color</label>
+          <div class="col-sm-6 form-horizontal">
+              <div id="light2-color" class="input-group" title="Using input value">
+                  <span class="input-group-append">
+                    <span class="input-group-text colorpicker-input-addon"><i></i></span>
+                  </span>
+                </div>
+          </div>
+        </div>
+
         <div class="form-group row align-items-center">
             <div class="col-sm-12 form-horizontal">
               <button class="form-control btn btn-outline-dark" type="button" onclick="reset_all()">Reset</button>
@@ -140,14 +136,26 @@
 
 
 
-<script src="js/button_function.js"></script>
 
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/jquery-3.4.1.min.js"
+integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+crossorigin="anonymous"></script>
+
+<script 
+src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" 
+integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" 
+crossorigin="anonymous"></script>
+<script 
+src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" 
+integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" 
+crossorigin="anonymous"></script>
+
+<script src="lib/bootstrap-colorpicker/bootstrap-colorpicker.min.js"></script>
+
+<script src="js/button_function.js"></script>
 <script src="lib/twgl-full.js"></script>
-<script src="lib/jquery-3.4.1.js"></script>
-<script src="js/shaderloader.js"></script>
+  <script src="js/shaderloader.js"></script>
 <script src="js/fractalViewer.js"></script>
 
 </html>

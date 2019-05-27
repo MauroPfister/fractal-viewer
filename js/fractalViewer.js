@@ -7,7 +7,53 @@ $('.dropdown-menu a').on('click', function() {
   selectFractal(fractalType);
 })
 
-//document.getElementById('runSelector').onclick = function() {selectFractal(fractalType)};
+
+// change power of fractal
+$('#power_slid').on('input', function() {
+    power = $(this).val();
+    requestAnimationFrame(render);
+})
+
+// change max iterations
+$('#max_iter_slid').on('input', function() {
+    max_iter = $(this).val();
+    requestAnimationFrame(render);
+})
+
+// change epsilon
+$('#eps_slid').on('input', function() {
+    eps_multiplicator = $(this).val();
+    requestAnimationFrame(render);
+})
+
+// change light colors
+$('#light1-color').colorpicker({
+    useAlpha: false,
+    color: "#FFFFFF"
+});
+
+$('#light2-color').colorpicker({
+    useAlpha: false,
+    color: "#FFFFFF"
+});
+    
+$('#light1-color').on('colorpickerChange', function(event) {
+    var rgbString = event.color.toRgbString();
+    var rgbArray = rgbString.split(')')[0].split('(')[1].split(', ');   // very ugly hack to get RGB components in an vector
+    light1_color = rgbArray;
+    twgl.v3.divScalar(light1_color, 255.0, light1_color);
+    requestAnimationFrame(render);
+});
+
+$('#light2-color').on('colorpickerChange', function(event) {
+    var rgbString = event.color.toRgbString();
+    var rgbArray = rgbString.split(')')[0].split('(')[1].split(', ');   // very ugly hack to get RGB components in an vector
+    light2_color = rgbArray;
+    twgl.v3.divScalar(light2_color, 255.0, light2_color);
+    requestAnimationFrame(render);
+});
+
+
 
 const gl = document.getElementById("c").getContext("webgl2");
 function getRelativeMousePosition(event, target) {
@@ -50,10 +96,15 @@ function selectFractal(fractalType) {
   }
 }
   
-// var z_ang = 0.0;
-// var y_ang = 0.0;
-// var z_ang0 = 0.0;
-// var y_ang0 = 0.0;
+
+// uniforms
+// REORGANIZE THIS FUCKING MESS.....
+var max_iter = 200;
+var power = 8.0;
+var eps_multiplicator = 2.0;
+var light1_color = twgl.v3.create(1.0, 1.0, 1.0);
+var light2_color = twgl.v3.create(1.0, 1.0, 1.0);
+
 var z_dif = 0;
 var y_dif = 0;
 var mouseDown = false;
@@ -65,12 +116,12 @@ var y_axis = twgl.v3.create(0, 1.0, 0);
 var m_rot = twgl.m4.identity();
 var m_view = twgl.m4.copy(m_rot);
 
-gl.canvas.addEventListener('mousedown', e=> {
+gl.canvas.addEventListener('mousedown', e => {
   pos0 = getRelativeMousePosition(e, gl.canvas);
   mouseDown = true;
 });
 
-window.addEventListener('mouseup', e=> {
+window.addEventListener('mouseup', e => {
   //z_ang0 = z_ang;
   //y_ang0 = y_ang;
   mouseDown = false;
@@ -103,9 +154,11 @@ window.addEventListener('mousemove', e => {
 
 
 
-window.addEventListener('wheel', e=> {
+window.addEventListener('wheel', e => {
   if (scale > -0.05*event.deltaX){
     scale += 0.05*event.deltaX;
+    requestAnimationFrame(render);
+
   }
   
   //wheel_value = wheel_value + 0.01*event.deltaX;
@@ -145,9 +198,8 @@ function render() {
   uniforms.m_view = m_view;
   uniforms.n = power;
   uniforms.resolution = [gl.canvas.width, gl.canvas.height];
-  uniforms.light_red = light_red;
-  uniforms.light_green = light_green;
-  uniforms.light_blue = light_blue;
+  uniforms.light1_color = light1_color;
+  uniforms.light2_color = light2_color;
   uniforms.eps_multiplicator = eps_multiplicator;
   uniforms.max_iter = max_iter;
 
