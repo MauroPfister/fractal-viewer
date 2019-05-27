@@ -107,13 +107,18 @@ $('#Julia-real').on('input', function() {
 })
 */
     
-// reset values
+// reset all settings to standard values
 $('#reset_button').on('click', function() {
   scale = 1.0;
   m_rot = twgl.m4.identity();
-
   eps_multiplicator = 2.0;
-  power = 8.0;
+  shape_factor = 8.0;
+
+  // reset sliders and colorpickers to default values
+  $('#eps_slid').val(eps_multiplicator);
+  $('#shape_factor-slid').val(shape_factor);
+  $('#light1-color').colorpicker('setValue', "#FFFFFF");
+  $('#light2-color').colorpicker('setValue', "#FFFFFF");
   requestAnimationFrame(render);
 })
 
