@@ -2,14 +2,8 @@
 
 precision mediump float;
 
-uniform mat4 m_view;
-uniform float n;
-uniform vec2 resolution;
-uniform vec3 light1_color;
-uniform vec3 light2_color;
-uniform float eps_multiplicator;
-uniform int max_iter;
-
+// define all uniforms in uniforms.glsl file
+$uniforms$
 
 out vec4 f_color;   // Final color output produced by fragment shader.
 

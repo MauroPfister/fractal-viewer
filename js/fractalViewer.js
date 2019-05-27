@@ -142,7 +142,7 @@ window.addEventListener('mousemove', e => {
   if (mouseDown == true) {
     const pos = getRelativeMousePosition(e, gl.canvas);
     z_dif = (pos.x - pos0.x) / gl.canvas.width * 2;
-    y_dif = -(pos.y - pos0.y) / gl.canvas.height * 2;             
+    y_dif = - (pos.y - pos0.y) / gl.canvas.height * 2;             
     requestAnimationFrame(render);
   }
 });
@@ -182,7 +182,7 @@ function selectFractal(fractalType) {
       shaderLoader.load( 'mandelbox.frag' );
       break;
     case "Juliaset":
-      shaderLoader.load( 'julia.frag' );
+      shaderLoader.load( 'juliaset.frag' );
       break;    
     case "Sierpinski pyramid":
       shaderLoader.load( 'pyramid.frag' );

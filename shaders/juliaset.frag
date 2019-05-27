@@ -2,13 +2,8 @@
 
 precision mediump float;
 
-uniform mat4 m_view;
-uniform float Power;
-uniform vec2 resolution;
-uniform vec3 light1_color;
-uniform vec3 light2_color;
-uniform float eps_multiplicator;
-uniform int max_iter;
+// define all uniforms in uniforms.glsl file
+$uniforms$
 uniform float julia_real;
 uniform vec3 julia_im;
 
