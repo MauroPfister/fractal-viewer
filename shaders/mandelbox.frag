@@ -7,6 +7,8 @@ $uniforms$
 
 out vec4 f_color;   // Final color output produced by fragment shader.
 
+// source for distance estimator:
+// http://blog.hvidtfeldts.net/index.php/2011/08/distance-estimated-3d-fractals-iii-folding-space/
 
 const float foldingLimit = 1.0;
 const float fixedRadius2 = 1.5; 
@@ -21,7 +23,7 @@ void sphereFold(inout vec3 z, inout float dz) {
 	float r2 = dot(z,z);
 	if (r2 < minRadius2) { 
 		// linear inner scaling
-		float temp = (fixedRadius2/minRadius2);
+		float temp = (fixedRadius2 / minRadius2);
 		z *= temp;
 		dz *= temp;
 	} else if (r2 < fixedRadius2) { 
@@ -34,12 +36,11 @@ void sphereFold(inout vec3 z, inout float dz) {
 
 // distance estimator for mandelbox fractal
 float dist_estimator(vec3 pos) {
-
-	int iter = 4;
+	int iter = int(shape_factor);
 	vec3 w = pos;
 	float dr = 1.0;			// escape time length
 
-	for (int n=0; n < iter; n++){
+	for (int i = 0; i < iter; i++){
 		boxFold(pos, dr);
 		sphereFold(pos, dr);
 
@@ -49,15 +50,9 @@ float dist_estimator(vec3 pos) {
 
 	float r = length(pos);
 	return r/abs(dr);
-
 }
 
-
-
-
 $ray_marching$
-//http://blog.hvidtfeldts.net/index.php/2011/08/distance-estimated-3d-fractals-iii-folding-space/
-
 
 
 

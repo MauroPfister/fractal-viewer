@@ -13,7 +13,7 @@ var bufferInfo;
 
 // uniforms
 // var max_iter = 200;
-var power = 8.0;
+var shape_factor = 8.0;
 var eps_multiplicator = 2.0;
 var scale = 1.0;
 var light1_color = twgl.v3.create(1.0, 1.0, 1.0);
@@ -41,8 +41,8 @@ $('.dropdown-menu a').on('click', function() {
 })
 
 // change power of fractal
-$('#power_slid').on('input', function() {
-    power = $(this).val();
+$('#shape_factor-slid').on('input', function() {
+    shape_factor = $(this).val();
     requestAnimationFrame(render);
 })
 
@@ -107,12 +107,12 @@ $('#Julia-real').on('input', function() {
     
 // reset values
 $('#reset_button').on('click', function() {
-    scale = 1.0;
-    m_rot = twgl.m4.identity();
+  scale = 1.0;
+  m_rot = twgl.m4.identity();
 
-    eps_multiplicator = 2.0;
-    power = 8.0;
-    requestAnimationFrame(render);
+  eps_multiplicator = 2.0;
+  power = 8.0;
+  requestAnimationFrame(render);
 })
 
 // mouse event listeners
@@ -180,12 +180,13 @@ function selectFractal(fractalType) {
       break;
     case "Mandelbox":
       shaderLoader.load( 'mandelbox.frag' );
+      scale = 2.0;
       break;
     case "Juliaset":
       shaderLoader.load( 'juliaset.frag' );
       break;    
     case "Sierpinski pyramid":
-      shaderLoader.load( 'pyramid.frag' );
+      shaderLoader.load( 'sierpinski.frag' );
       break;
     default:
       shaderLoader.load( 'default.frag' );
@@ -220,7 +221,7 @@ function render() {
 
   const uniforms = {
     m_view : m_view,
-    n : power,
+    shape_factor : shape_factor,
     resolution : [gl.canvas.width, gl.canvas.height],
     light1_color : light1_color,
     light2_color : light2_color,

@@ -19,12 +19,13 @@ float intersect( inout vec3 p, vec3 r_dir, int max_iter, float dist_tot_max, flo
     float dist;
 
     for (int i = 0; i < max_iter; i++) {
-        dist = dist_estimator(p); 
+        // 0.5 * dist_estimator(p) to avoid entering the fractal when camera is far away
+        dist = 0.5 * dist_estimator(p); 
         dist_tot += dist;
         p += dist * r_dir;     // ray marching step
 
         // stop if distance to object is smaller than tolerance or if we are past the object
-        if ( (dist < eps * dist_tot) || (dist_tot > dist_tot_max)) {
+        if ( (dist < eps) || (dist_tot > dist_tot_max)) {
             return dist_tot;
         }
     }
@@ -76,15 +77,11 @@ void main() {
     vec3 r_o = mat3(m_view) * (vec3(-5, 0, 0) + vec3(f, v2f_position));     // ray origin
     vec3 r_dir = normalize(r_o - eye);                    // ray direction
 
-
     // light properties
     int number_of_lights = 2;
     vec3 light_pos[2] = vec3[]( vec3(-3.0, 3.0, 1.0), vec3(-4.0, -3.0, -1.0));
     vec3 light_col[2] = vec3[]( light1_color, light2_color );
     
-    //vec3 light_pos = vec3(-3., 3.0, 0.0);
-    //vec3 light_col = vec3(1.0 , 1.0, 1.0);
-
     // sky colour
     vec3 sky_col = vec3(0.8, 0.9, 1.0);
 
@@ -96,12 +93,14 @@ void main() {
     // ray marching parameters (these work well for the moment)
     float eps = eps_multiplicator / resolution.y; // ray marching tolerance
     //int max_iter = 200;             // maximal ray marching iterations
-    float dist_tot_max = 5.0;      // maximal distance before color is set to background color
+
+    // maximal marched distance after which sky/background is shown
+    float dist_tot_max = length(eye) + 3.0;
 
     vec3 color = vec3(0, 0, 0);     // color of object at intersection
 
-    // ray marching
-    vec3 p = r_o;
+    // ------------- ray marching -----------------------------------
+    vec3 p = eye;
     float dist_tot = intersect(p, r_dir, max_iter, dist_tot_max, eps);
 
     // normal at intersection point
@@ -118,7 +117,7 @@ void main() {
 
             // determine if point is shadowed
             int shadow = shadow( p, n, light_pos[light], max_iter, dist_tot_max, eps );
-            
+
             // phong lighting model
             if ( shadow == 0 ) {        
                 // ambient component
