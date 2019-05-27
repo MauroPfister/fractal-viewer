@@ -1,6 +1,13 @@
 
-// Shader Loader will load any shader you want,
-// And be able to add in large functions ( such as noise )
+/*
+
+  ShaderLoader is a sort of pre-processor for GLSL fragment shaders
+  that makes it easy to combine several GLSL files into one shader.
+
+  Most of the code was taken from: https://github.com/cabbibo/ShaderLoader
+  and then adapted to our needs.
+
+*/
 
 function ShaderLoader( pathToShaders , pathToChunks ){
 
