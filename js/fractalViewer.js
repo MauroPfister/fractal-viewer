@@ -238,7 +238,8 @@ function setupShaders() {
   programInfo = twgl.createProgramInfo(gl, [vs, fs]);
 
   const arrays = {
-    position: [-1, -1, 0, 1, -1, 0, -1, 1, 0, -1, 1, 0, 1, -1, 0, 1, 1, 0],
+    position: { numComponents: 2, data : [-1, -1, 1, -1, -1, 1, 1, 1],  },
+    indices:  { numComponents: 3, data: [0, 1, 2, 1, 2, 3],             },
   };
 
   bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
