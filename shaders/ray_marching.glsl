@@ -11,7 +11,7 @@ vec3 calc_normal( in vec3 p, float eps)
     
 }
 
-// raymarch ray with origin p = r_o and direction r_dir and return total distance as well as intersection point p
+// raymarch ray with origin p and direction r_dir and return total distance as well as intersection point p
 float intersect( inout vec3 p, vec3 r_dir, int max_iter, float dist_tot_max, float eps ) 
 {
     float dist_tot = 0.0;
@@ -70,12 +70,19 @@ float ambient_occlusion(float eps, vec3 n, vec3 p) {
 
 void main() {
 
-    vec2 v2f_position = (2.0*gl_FragCoord.xy - resolution) / resolution.y;
-
+    /* 
+    camera settings
+        f: focal length
+        pix_coord_2d: pixel coordinate on image plane
+        pix_coord_3d: pixel coordinate in 3d space
+        eye: eye/camera location
+        r_dir: ray direction
+    */
     float f = 3.0;
-    vec3 eye = mat3(m_view) * vec3(-5, 0, 0);            // eye location
-    vec3 r_o = mat3(m_view) * (vec3(-5, 0, 0) + vec3(f, v2f_position));     // ray origin
-    vec3 r_dir = normalize(r_o - eye);                    // ray direction
+    vec3 eye = mat3(m_view) * vec3(-5, 0, 0);
+    vec2 pix_coord_2D = (2.0*gl_FragCoord.xy - resolution) / resolution.y;
+    vec3 pix_coord_3D = mat3(m_view) * (vec3(-5, 0, 0) + vec3(f, pix_coord_2D));
+    vec3 r_dir = normalize(pix_coord_3D - eye);
 
     // light properties
     int number_of_lights = 2;
@@ -86,8 +93,8 @@ void main() {
     vec3 sky_col = vec3(0.8, 0.9, 1.0);
 
     // material of object
-    vec3 m_dif = vec3(0.7);
-    vec3 m_spec = vec3(0.4);
+    vec3 m_dif = vec3(0.7);         // diffuse color
+    vec3 m_spec = vec3(0.4);        // specular color
     float shininess = 20.0;         // specular coefficient
 
     // ray marching parameters (these work well for the moment)
